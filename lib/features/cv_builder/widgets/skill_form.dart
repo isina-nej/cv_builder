@@ -21,16 +21,9 @@ class _SkillFormState extends State<SkillForm> {
   final _nameController = TextEditingController();
   int _selectedLevel = 3;
 
-  final List<String> _skillCategories = [
-    'Programming',
-    'Design',
-    'Languages',
-    'Soft Skills',
-    'Technical',
-    'Other',
-  ];
+  final List<SkillCategory> _skillCategories = SkillCategory.values;
 
-  String _selectedCategory = 'Programming';
+  SkillCategory _selectedCategory = SkillCategory.technical;
 
   @override
   void dispose() {
@@ -49,7 +42,6 @@ class _SkillFormState extends State<SkillForm> {
       context.read<CVProvider>().addSkill(skill);
       _nameController.clear();
       _selectedLevel = 3;
-      setState(() {});
     }
   }
 
@@ -121,7 +113,7 @@ class _SkillFormState extends State<SkillForm> {
                 Gap(16.h),
 
                 // Category dropdown
-                DropdownButtonFormField<String>(
+                DropdownButtonFormField<SkillCategory>(
                   value: _selectedCategory,
                   decoration: const InputDecoration(
                     labelText: 'Category',
@@ -130,7 +122,7 @@ class _SkillFormState extends State<SkillForm> {
                   items: _skillCategories.map((category) {
                     return DropdownMenuItem(
                       value: category,
-                      child: Text(category),
+                      child: Text(_getCategoryDisplayName(category)),
                     );
                   }).toList(),
                   onChanged: (value) {
@@ -271,7 +263,7 @@ class _SkillFormState extends State<SkillForm> {
                                             ),
                                           ),
                                           child: Text(
-                                            skill.category,
+                                            _getCategoryDisplayName(skill.category),
                                             style: GoogleFonts.inter(
                                               fontSize: 12.sp,
                                               color: _getSkillLevelColor(
@@ -385,5 +377,26 @@ class _SkillFormState extends State<SkillForm> {
         ],
       ),
     );
+  }
+
+  String _getCategoryDisplayName(SkillCategory category) {
+    switch (category) {
+      case SkillCategory.technical:
+        return 'Technical';
+      case SkillCategory.language:
+        return 'Language';
+      case SkillCategory.soft:
+        return 'Soft Skills';
+      case SkillCategory.creative:
+        return 'Creative';
+      case SkillCategory.analytical:
+        return 'Analytical';
+      case SkillCategory.management:
+        return 'Management';
+      case SkillCategory.communication:
+        return 'Communication';
+      case SkillCategory.other:
+        return 'Other';
+    }
   }
 }
