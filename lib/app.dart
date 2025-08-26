@@ -1,5 +1,7 @@
 // lib/app.dart
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'config/themes/app_themes.dart';
 import 'config/l10n/l10n.dart';
@@ -12,19 +14,45 @@ class CVApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
-    final localeProvider = Provider.of<LocaleProvider>(context);
-
-    return MaterialApp(
-      title: 'CV Builder',
-      theme: AppThemes.lightTheme,
-      darkTheme: AppThemes.darkTheme,
-      themeMode: themeProvider.themeMode,
-      locale: localeProvider.locale,
-      supportedLocales: L10n.supportedLocales,
-      localizationsDelegates: L10n.localizationsDelegates,
-      onGenerateRoute: AppRouter.onGenerateRoute,
-      initialRoute: AppRouter.builder,
+    return ScreenUtilInit(
+      designSize: const Size(375, 812), // iPhone 13 design size
+      minTextAdapt: true,
+      splitScreenMode: true,
+      useInheritedMediaQuery: true,
+      builder: (context, child) {
+        return AnnotatedRegion<SystemUiOverlayStyle>(
+          value: const SystemUiOverlayStyle(
+            statusBarColor: Colors.transparent,
+            statusBarIconBrightness: Brightness.dark,
+            systemNavigationBarColor: Colors.transparent,
+            systemNavigationBarIconBrightness: Brightness.dark,
+          ),
+          child: Consumer2<ThemeProvider, LocaleProvider>(
+            builder: (context, themeProvider, localeProvider, _) {
+              return MaterialApp(
+                title: 'Professional CV Builder',
+                debugShowCheckedModeBanner: false,
+                theme: AppThemes.lightTheme,
+                darkTheme: AppThemes.darkTheme,
+                themeMode: themeProvider.themeMode,
+                locale: localeProvider.locale,
+                supportedLocales: L10n.supportedLocales,
+                localizationsDelegates: L10n.localizationsDelegates,
+                onGenerateRoute: AppRouter.onGenerateRoute,
+                initialRoute: AppRouter.welcome,
+                builder: (context, child) {
+                  return MediaQuery(
+                    data: MediaQuery.of(
+                      context,
+                    ).copyWith(textScaler: const TextScaler.linear(1.0)),
+                    child: child!,
+                  );
+                },
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }

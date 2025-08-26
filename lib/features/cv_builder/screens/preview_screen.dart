@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/cv_preview.dart';
 import '../../../services/export_service.dart';
-import '../../../../../config/routes/app_router.dart';
+import '../../../config/routes/app_router.dart';
 
 class PreviewScreen extends StatelessWidget {
   const PreviewScreen({super.key});
@@ -26,11 +26,6 @@ class PreviewScreen extends StatelessWidget {
           FloatingActionButton(
             onPressed: () => ExportService.exportToPDF(context),
             child: const Icon(Icons.picture_as_pdf),
-          ),
-          const SizedBox(height: 16),
-          FloatingActionButton(
-            onPressed: () => ExportService.exportToWord(context),
-            child: const Icon(Icons.description),
           ),
           const SizedBox(height: 16),
           FloatingActionButton(

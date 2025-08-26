@@ -6,6 +6,10 @@ class ThemeProvider extends ChangeNotifier {
   ThemeMode _themeMode = ThemeMode.system;
   ThemeMode get themeMode => _themeMode;
 
+  bool get isDarkMode => _themeMode == ThemeMode.dark;
+  bool get isLightMode => _themeMode == ThemeMode.light;
+  bool get isSystemMode => _themeMode == ThemeMode.system;
+
   final SharedPreferences prefs;
 
   ThemeProvider(this.prefs) {
@@ -24,9 +28,35 @@ class ThemeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void toggleTheme(ThemeMode mode) {
-    _themeMode = mode;
-    prefs.setString('theme', mode == ThemeMode.light ? 'light' : mode == ThemeMode.dark ? 'dark' : 'system');
+  void toggleTheme() {
+    if (_themeMode == ThemeMode.light) {
+      _themeMode = ThemeMode.dark;
+    } else {
+      _themeMode = ThemeMode.light;
+    }
+    _saveTheme();
     notifyListeners();
+  }
+
+  void setTheme(ThemeMode mode) {
+    _themeMode = mode;
+    _saveTheme();
+    notifyListeners();
+  }
+
+  void _saveTheme() {
+    String themeString;
+    switch (_themeMode) {
+      case ThemeMode.light:
+        themeString = 'light';
+        break;
+      case ThemeMode.dark:
+        themeString = 'dark';
+        break;
+      case ThemeMode.system:
+        themeString = 'system';
+        break;
+    }
+    prefs.setString('theme', themeString);
   }
 }
