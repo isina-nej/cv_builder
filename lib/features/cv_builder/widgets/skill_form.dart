@@ -263,7 +263,9 @@ class _SkillFormState extends State<SkillForm> {
                                             ),
                                           ),
                                           child: Text(
-                                            _getCategoryDisplayName(skill.category),
+                                            _getCategoryDisplayName(
+                                              skill.category,
+                                            ),
                                             style: GoogleFonts.inter(
                                               fontSize: 12.sp,
                                               color: _getSkillLevelColor(

@@ -47,7 +47,10 @@ class AdvancedPDFExporter {
               pw.Column(
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: cv.experiences
-                    .map((exp) => _buildExperienceItem(exp, secondaryColor, textColor))
+                    .map(
+                      (exp) =>
+                          _buildExperienceItem(exp, secondaryColor, textColor),
+                    )
                     .toList(),
               ),
             ),
@@ -62,7 +65,9 @@ class AdvancedPDFExporter {
               pw.Column(
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: cv.educations
-                    .map((edu) => _buildEducationItem(edu, accentColor, textColor))
+                    .map(
+                      (edu) => _buildEducationItem(edu, accentColor, textColor),
+                    )
                     .toList(),
               ),
             ),
@@ -99,7 +104,9 @@ class AdvancedPDFExporter {
         crossAxisAlignment: pw.CrossAxisAlignment.start,
         children: [
           pw.Text(
-            cv.personalInfo.name.isNotEmpty ? cv.personalInfo.name : 'Your Name',
+            cv.personalInfo.name.isNotEmpty
+                ? cv.personalInfo.name
+                : 'Your Name',
             style: pw.TextStyle(
               fontSize: 28,
               fontWeight: pw.FontWeight.bold,
@@ -146,10 +153,7 @@ class AdvancedPDFExporter {
         ),
         pw.Text(
           value,
-          style: pw.TextStyle(
-            fontSize: 11,
-            color: PdfColors.white,
-          ),
+          style: pw.TextStyle(fontSize: 11, color: PdfColors.white),
         ),
       ],
     );
@@ -159,9 +163,7 @@ class AdvancedPDFExporter {
     return pw.Container(
       padding: const pw.EdgeInsets.symmetric(vertical: 10),
       decoration: pw.BoxDecoration(
-        border: pw.Border(
-          top: pw.BorderSide(color: primaryColor, width: 1),
-        ),
+        border: pw.Border(top: pw.BorderSide(color: primaryColor, width: 1)),
       ),
       child: pw.Row(
         mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
@@ -185,7 +187,11 @@ class AdvancedPDFExporter {
     );
   }
 
-  static pw.Widget _buildSection(String title, PdfColor primaryColor, pw.Widget content) {
+  static pw.Widget _buildSection(
+    String title,
+    PdfColor primaryColor,
+    pw.Widget content,
+  ) {
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
@@ -210,7 +216,11 @@ class AdvancedPDFExporter {
     );
   }
 
-  static pw.Widget _buildExperienceItem(dynamic exp, PdfColor color, PdfColor textColor) {
+  static pw.Widget _buildExperienceItem(
+    dynamic exp,
+    PdfColor color,
+    PdfColor textColor,
+  ) {
     return pw.Container(
       margin: const pw.EdgeInsets.only(bottom: 16),
       child: pw.Row(
@@ -274,7 +284,11 @@ class AdvancedPDFExporter {
     );
   }
 
-  static pw.Widget _buildEducationItem(dynamic edu, PdfColor color, PdfColor textColor) {
+  static pw.Widget _buildEducationItem(
+    dynamic edu,
+    PdfColor color,
+    PdfColor textColor,
+  ) {
     return pw.Container(
       margin: const pw.EdgeInsets.only(bottom: 16),
       child: pw.Row(
@@ -338,7 +352,11 @@ class AdvancedPDFExporter {
     );
   }
 
-  static pw.Widget _buildSkillsSection(List<dynamic> skills, PdfColor primaryColor, PdfColor textColor) {
+  static pw.Widget _buildSkillsSection(
+    List<dynamic> skills,
+    PdfColor primaryColor,
+    PdfColor textColor,
+  ) {
     // Group skills by category
     final Map<SkillCategory, List<dynamic>> groupedSkills = {};
     for (final skill in skills) {
@@ -370,10 +388,15 @@ class AdvancedPDFExporter {
                 runSpacing: 6,
                 children: entry.value.map((skill) {
                   return pw.Container(
-                    padding: const pw.EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    padding: const pw.EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 4,
+                    ),
                     decoration: pw.BoxDecoration(
                       color: _getCategoryColor(skill.category).shade(0.1),
-                      borderRadius: const pw.BorderRadius.all(pw.Radius.circular(12)),
+                      borderRadius: const pw.BorderRadius.all(
+                        pw.Radius.circular(12),
+                      ),
                       border: pw.Border.all(
                         color: _getCategoryColor(skill.category),
                         width: 0.5,

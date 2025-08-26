@@ -40,7 +40,7 @@ class CVTemplatePreview extends StatelessWidget {
                   // Header Section
                   _buildHeader(cvProvider),
                   Gap(24.h),
-                  
+
                   // Professional Summary
                   if (cvProvider.cv.personalInfo.summary.isNotEmpty) ...[
                     _buildSection(
@@ -98,18 +98,14 @@ class CVTemplatePreview extends StatelessWidget {
               ),
             ),
           ),
-        ).animate().slideY(
-          begin: 0.3,
-          duration: 800.ms,
-          curve: Curves.easeOut,
-        );
+        ).animate().slideY(begin: 0.3, duration: 800.ms, curve: Curves.easeOut);
       },
     );
   }
 
   Widget _buildHeader(CVProvider cvProvider) {
     final personal = cvProvider.cv.personalInfo;
-    
+
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(24.w),
@@ -142,7 +138,7 @@ class CVTemplatePreview extends StatelessWidget {
             ),
           ),
           Gap(16.h),
-          
+
           // Contact Info
           Wrap(
             spacing: 20.w,
@@ -165,11 +161,7 @@ class CVTemplatePreview extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(
-          icon,
-          size: 16.sp,
-          color: Colors.white.withOpacity(0.9),
-        ),
+        Icon(icon, size: 16.sp, color: Colors.white.withOpacity(0.9)),
         Gap(6.w),
         Text(
           text,
@@ -188,11 +180,7 @@ class CVTemplatePreview extends StatelessWidget {
       children: [
         Row(
           children: [
-            Icon(
-              icon,
-              size: 20.sp,
-              color: AppColors.primary,
-            ),
+            Icon(icon, size: 20.sp, color: AppColors.primary),
             Gap(8.w),
             Text(
               title,
@@ -204,10 +192,7 @@ class CVTemplatePreview extends StatelessWidget {
             ),
             Gap(12.w),
             Expanded(
-              child: Container(
-                height: 1,
-                color: Colors.grey.withOpacity(0.3),
-              ),
+              child: Container(height: 1, color: Colors.grey.withOpacity(0.3)),
             ),
           ],
         ),
@@ -233,7 +218,7 @@ class CVTemplatePreview extends StatelessWidget {
               shape: BoxShape.circle,
             ),
           ),
-          
+
           // Content
           Expanded(
             child: Column(
@@ -299,7 +284,7 @@ class CVTemplatePreview extends StatelessWidget {
               shape: BoxShape.circle,
             ),
           ),
-          
+
           // Content
           Expanded(
             child: Column(
@@ -389,7 +374,9 @@ class CVTemplatePreview extends StatelessWidget {
                       color: _getCategoryColor(skill.category).withOpacity(0.1),
                       borderRadius: BorderRadius.circular(16.r),
                       border: Border.all(
-                        color: _getCategoryColor(skill.category).withOpacity(0.3),
+                        color: _getCategoryColor(
+                          skill.category,
+                        ).withOpacity(0.3),
                       ),
                     ),
                     child: Row(
