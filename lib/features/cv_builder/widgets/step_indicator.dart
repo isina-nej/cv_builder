@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import '../screens/builder_screen.dart';
 
 class StepIndicator extends StatelessWidget {
@@ -78,7 +78,7 @@ class StepIndicator extends StatelessWidget {
                     Text(
                       step.title,
                       textAlign: TextAlign.center,
-                      style: GoogleFonts.inter(
+                      style: TextStyle(fontFamily: 'System',
                         fontSize: 12.sp,
                         fontWeight: isActive
                             ? FontWeight.w600
@@ -138,7 +138,7 @@ class StepIndicator extends StatelessWidget {
             steps[currentStep].description,
             key: ValueKey(currentStep),
             textAlign: TextAlign.center,
-            style: GoogleFonts.inter(
+            style: TextStyle(fontFamily: 'System',
               fontSize: 14.sp,
               color: theme.colorScheme.onSurfaceVariant,
             ),

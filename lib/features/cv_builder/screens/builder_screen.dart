@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../../core/providers/theme_provider.dart';
 import '../widgets/animated_card.dart';
@@ -12,7 +11,7 @@ import '../widgets/personal_form.dart';
 import '../widgets/education_form.dart';
 import '../widgets/experience_form.dart';
 import '../widgets/skill_form.dart';
-import '../widgets/template_selector.dart';
+import '../widgets/simple_template_selector.dart';
 
 class BuilderScreen extends StatefulWidget {
   const BuilderScreen({super.key});
@@ -122,7 +121,8 @@ class _BuilderScreenState extends State<BuilderScreen>
       appBar: AppBar(
         title: Text(
           'CV Builder',
-          style: GoogleFonts.poppins(
+          style: TextStyle(
+            fontFamily: 'System',
             fontSize: 24.sp,
             fontWeight: FontWeight.w600,
           ),
@@ -182,7 +182,13 @@ class _BuilderScreenState extends State<BuilderScreen>
                     _buildStepContent(const ExperienceForm()),
                     _buildStepContent(const EducationForm()),
                     _buildStepContent(const SkillForm()),
-                    _buildStepContent(const TemplateSelector()),
+                    _buildStepContent(
+                      SimpleTemplateSelector(
+                        onTemplateSelected: (template) {
+                          // Handle template selection
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -220,7 +226,8 @@ class _BuilderScreenState extends State<BuilderScreen>
                             Gap(8.w),
                             Text(
                               'Previous',
-                              style: GoogleFonts.inter(
+                              style: TextStyle(
+                                fontFamily: 'System',
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -253,7 +260,8 @@ class _BuilderScreenState extends State<BuilderScreen>
                             _currentStep < _steps.length - 1
                                 ? 'Next'
                                 : 'Preview CV',
-                            style: GoogleFonts.inter(
+                            style: TextStyle(
+                              fontFamily: 'System',
                               fontSize: 16.sp,
                               fontWeight: FontWeight.w600,
                             ),

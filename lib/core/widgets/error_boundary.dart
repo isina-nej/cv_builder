@@ -25,16 +25,8 @@ class _ErrorBoundaryState extends State<ErrorBoundary> {
   @override
   void initState() {
     super.initState();
-    // Catch Flutter errors
-    FlutterError.onError = (FlutterErrorDetails details) {
-      setState(() {
-        _error = details.exception;
-      });
-      widget.onError?.call(
-        details.exception,
-        details.stack ?? StackTrace.empty,
-      );
-    };
+    // Note: FlutterError.onError should be set at app level, not widget level
+    // This is just for catching widget-specific errors
   }
 
   @override

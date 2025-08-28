@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:provider/provider.dart';
 import '../../../config/themes/colors.dart';
 import '../../../core/providers/cv_provider.dart';
@@ -48,7 +48,7 @@ class CVTemplatePreview extends StatelessWidget {
                       Icons.person_outline,
                       child: Text(
                         cvProvider.cv.personalInfo.summary,
-                        style: GoogleFonts.inter(
+                        style: TextStyle(fontFamily: 'System',
                           fontSize: 14.sp,
                           color: Colors.grey[700],
                           height: 1.6,
@@ -122,7 +122,7 @@ class CVTemplatePreview extends StatelessWidget {
         children: [
           Text(
             personal.name.isNotEmpty ? personal.name : 'Your Name',
-            style: GoogleFonts.inter(
+            style: TextStyle(fontFamily: 'System',
               fontSize: 28.sp,
               fontWeight: FontWeight.bold,
               color: Colors.white,
@@ -131,7 +131,7 @@ class CVTemplatePreview extends StatelessWidget {
           Gap(8.h),
           Text(
             'Professional',
-            style: GoogleFonts.inter(
+            style: TextStyle(fontFamily: 'System',
               fontSize: 18.sp,
               fontWeight: FontWeight.w500,
               color: Colors.white.withOpacity(0.9),
@@ -165,7 +165,7 @@ class CVTemplatePreview extends StatelessWidget {
         Gap(6.w),
         Text(
           text,
-          style: GoogleFonts.inter(
+          style: TextStyle(fontFamily: 'System',
             fontSize: 14.sp,
             color: Colors.white.withOpacity(0.9),
           ),
@@ -184,7 +184,7 @@ class CVTemplatePreview extends StatelessWidget {
             Gap(8.w),
             Text(
               title,
-              style: GoogleFonts.inter(
+              style: TextStyle(fontFamily: 'System',
                 fontSize: 20.sp,
                 fontWeight: FontWeight.w600,
                 color: AppColors.textPrimary,
@@ -226,7 +226,7 @@ class CVTemplatePreview extends StatelessWidget {
               children: [
                 Text(
                   exp.position ?? 'Position',
-                  style: GoogleFonts.inter(
+                  style: TextStyle(fontFamily: 'System',
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w600,
                     color: AppColors.textPrimary,
@@ -235,7 +235,7 @@ class CVTemplatePreview extends StatelessWidget {
                 Gap(4.h),
                 Text(
                   exp.company ?? 'Company',
-                  style: GoogleFonts.inter(
+                  style: TextStyle(fontFamily: 'System',
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
                     color: AppColors.primary,
@@ -244,7 +244,7 @@ class CVTemplatePreview extends StatelessWidget {
                 Gap(4.h),
                 Text(
                   '${exp.startDate ?? 'Start'} - ${exp.endDate ?? 'Present'}',
-                  style: GoogleFonts.inter(
+                  style: TextStyle(fontFamily: 'System',
                     fontSize: 12.sp,
                     color: Colors.grey[600],
                   ),
@@ -253,7 +253,7 @@ class CVTemplatePreview extends StatelessWidget {
                   Gap(8.h),
                   Text(
                     exp.description!,
-                    style: GoogleFonts.inter(
+                    style: TextStyle(fontFamily: 'System',
                       fontSize: 13.sp,
                       color: Colors.grey[700],
                       height: 1.5,
@@ -292,7 +292,7 @@ class CVTemplatePreview extends StatelessWidget {
               children: [
                 Text(
                   edu.degree ?? 'Degree',
-                  style: GoogleFonts.inter(
+                  style: TextStyle(fontFamily: 'System',
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w600,
                     color: AppColors.textPrimary,
@@ -301,7 +301,7 @@ class CVTemplatePreview extends StatelessWidget {
                 Gap(4.h),
                 Text(
                   edu.institution ?? 'Institution',
-                  style: GoogleFonts.inter(
+                  style: TextStyle(fontFamily: 'System',
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
                     color: AppColors.secondary,
@@ -310,7 +310,7 @@ class CVTemplatePreview extends StatelessWidget {
                 Gap(4.h),
                 Text(
                   '${edu.startDate ?? 'Start'} - ${edu.endDate ?? 'Present'}',
-                  style: GoogleFonts.inter(
+                  style: TextStyle(fontFamily: 'System',
                     fontSize: 12.sp,
                     color: Colors.grey[600],
                   ),
@@ -319,7 +319,7 @@ class CVTemplatePreview extends StatelessWidget {
                   Gap(4.h),
                   Text(
                     'Grade: ${edu.grade}',
-                    style: GoogleFonts.inter(
+                    style: TextStyle(fontFamily: 'System',
                       fontSize: 12.sp,
                       color: Colors.grey[600],
                       fontWeight: FontWeight.w500,
@@ -354,7 +354,7 @@ class CVTemplatePreview extends StatelessWidget {
             children: [
               Text(
                 _getCategoryDisplayName(entry.key),
-                style: GoogleFonts.inter(
+                style: TextStyle(fontFamily: 'System',
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w600,
                   color: AppColors.primary,
@@ -384,7 +384,7 @@ class CVTemplatePreview extends StatelessWidget {
                       children: [
                         Text(
                           skill.name,
-                          style: GoogleFonts.inter(
+                          style: TextStyle(fontFamily: 'System',
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w500,
                             color: _getCategoryColor(skill.category),

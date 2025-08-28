@@ -20,19 +20,41 @@ class PreviewScreen extends StatelessWidget {
         ],
       ),
       body: const CVPreview(),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          FloatingActionButton(
-            onPressed: () => ExportService.exportToPDF(context),
-            child: const Icon(Icons.picture_as_pdf),
-          ),
-          const SizedBox(height: 16),
-          FloatingActionButton(
-            onPressed: () => ExportService.exportToHTML(context),
-            child: const Icon(Icons.web),
-          ),
-        ],
+      floatingActionButton: SizedBox(
+        height: 280,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            FloatingActionButton(
+              heroTag: "pdf",
+              onPressed: () => ExportService.exportToPDF(context),
+              child: const Icon(Icons.picture_as_pdf),
+              tooltip: 'Export as Modern PDF',
+            ),
+            const SizedBox(height: 12),
+            FloatingActionButton(
+              heroTag: "advanced_pdf",
+              onPressed: () => ExportService.exportToAdvancedPDF(context),
+              child: const Icon(Icons.picture_as_pdf_outlined),
+              tooltip: 'Export as Advanced PDF',
+              backgroundColor: Colors.deepPurple,
+            ),
+            const SizedBox(height: 12),
+            FloatingActionButton(
+              heroTag: "docx",
+              onPressed: () => ExportService.exportToDOCX(context),
+              child: const Icon(Icons.description),
+              tooltip: 'Export as DOCX',
+            ),
+            const SizedBox(height: 12),
+            FloatingActionButton(
+              heroTag: "html",
+              onPressed: () => ExportService.exportToHTML(context),
+              child: const Icon(Icons.web),
+              tooltip: 'Export as HTML',
+            ),
+          ],
+        ),
       ),
     );
   }

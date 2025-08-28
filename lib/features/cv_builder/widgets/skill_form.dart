@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:provider/provider.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import '../../../core/providers/cv_provider.dart';
@@ -58,7 +58,7 @@ class _SkillFormState extends State<SkillForm> {
           // Title
           Text(
             'Skills & Expertise',
-            style: GoogleFonts.poppins(
+            style: TextStyle(fontFamily: 'System',
               fontSize: 24.sp,
               fontWeight: FontWeight.w600,
               color: theme.colorScheme.onBackground,
@@ -67,7 +67,7 @@ class _SkillFormState extends State<SkillForm> {
           Gap(8.h),
           Text(
             'Add your technical and soft skills with proficiency levels',
-            style: GoogleFonts.inter(
+            style: TextStyle(fontFamily: 'System',
               fontSize: 14.sp,
               color: theme.colorScheme.onSurfaceVariant,
             ),
@@ -88,7 +88,7 @@ class _SkillFormState extends State<SkillForm> {
               children: [
                 Text(
                   'Add New Skill',
-                  style: GoogleFonts.poppins(
+                  style: TextStyle(fontFamily: 'System',
                     fontSize: 18.sp,
                     fontWeight: FontWeight.w600,
                   ),
@@ -136,7 +136,7 @@ class _SkillFormState extends State<SkillForm> {
                 // Skill level
                 Text(
                   'Proficiency Level: ${_getSkillLevelText(_selectedLevel)}',
-                  style: GoogleFonts.inter(
+                  style: TextStyle(fontFamily: 'System',
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
                   ),
@@ -156,8 +156,8 @@ class _SkillFormState extends State<SkillForm> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Beginner', style: GoogleFonts.inter(fontSize: 12.sp)),
-                    Text('Expert', style: GoogleFonts.inter(fontSize: 12.sp)),
+                    Text('Beginner', style: TextStyle(fontFamily: 'System',fontSize: 12.sp)),
+                    Text('Expert', style: TextStyle(fontFamily: 'System',fontSize: 12.sp)),
                   ],
                 ),
                 Gap(16.h),
@@ -186,7 +186,7 @@ class _SkillFormState extends State<SkillForm> {
           if (cvProvider.cv.skills.isNotEmpty) ...[
             Text(
               'Your Skills',
-              style: GoogleFonts.poppins(
+              style: TextStyle(fontFamily: 'System',
                 fontSize: 18.sp,
                 fontWeight: FontWeight.w600,
               ),
@@ -243,7 +243,7 @@ class _SkillFormState extends State<SkillForm> {
                                         Expanded(
                                           child: Text(
                                             skill.name,
-                                            style: GoogleFonts.poppins(
+                                            style: TextStyle(fontFamily: 'System',
                                               fontSize: 16.sp,
                                               fontWeight: FontWeight.w600,
                                             ),
@@ -266,7 +266,7 @@ class _SkillFormState extends State<SkillForm> {
                                             _getCategoryDisplayName(
                                               skill.category,
                                             ),
-                                            style: GoogleFonts.inter(
+                                            style: TextStyle(fontFamily: 'System',
                                               fontSize: 12.sp,
                                               color: _getSkillLevelColor(
                                                 skill.level,
@@ -280,7 +280,7 @@ class _SkillFormState extends State<SkillForm> {
                                     Gap(4.h),
                                     Text(
                                       _getSkillLevelText(skill.level),
-                                      style: GoogleFonts.inter(
+                                      style: TextStyle(fontFamily: 'System',
                                         fontSize: 14.sp,
                                         color:
                                             theme.colorScheme.onSurfaceVariant,

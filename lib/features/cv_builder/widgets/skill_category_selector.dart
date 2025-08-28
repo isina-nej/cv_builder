@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import '../../../config/themes/colors.dart';
 import '../models/skill.dart';
 
@@ -24,7 +24,7 @@ class SkillCategorySelector extends StatelessWidget {
       children: [
         Text(
           'Skill Category',
-          style: GoogleFonts.inter(
+          style: TextStyle(fontFamily: 'System',
             fontSize: 16.sp,
             fontWeight: FontWeight.w600,
             color: AppColors.textPrimary,
@@ -66,7 +66,7 @@ class SkillCategorySelector extends StatelessWidget {
                     Gap(8.w),
                     Text(
                       _getCategoryDisplayName(category),
-                      style: GoogleFonts.inter(
+                      style: TextStyle(fontFamily: 'System',
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
                         color: isSelected

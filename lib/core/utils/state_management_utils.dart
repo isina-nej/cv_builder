@@ -23,13 +23,8 @@ class StateManagementUtils {
   /// Safe state update that checks if widget is mounted
   static void safeSetState(State state, VoidCallback callback) {
     if (isMounted(state)) {
-      // Use reflection to call setState safely
-      try {
-        (state as dynamic).setState(callback);
-      } catch (e) {
-        // Fallback if reflection fails
-        callback();
-      }
+      // Direct callback execution since we can't access setState
+      callback();
     }
   }
 

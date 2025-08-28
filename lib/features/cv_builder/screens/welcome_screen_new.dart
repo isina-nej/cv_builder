@@ -73,8 +73,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -82,9 +80,9 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              theme.colorScheme.primary,
-              theme.colorScheme.secondary,
-              theme.colorScheme.tertiary,
+              Theme.of(context).colorScheme.primary,
+              Theme.of(context).colorScheme.secondary,
+              Theme.of(context).colorScheme.tertiary,
             ],
           ),
         ),
@@ -124,7 +122,10 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showThemeSelector(context),
         backgroundColor: Colors.white,
-        child: Icon(Icons.palette, color: theme.colorScheme.primary),
+        child: Icon(
+          Icons.palette,
+          color: Theme.of(context).colorScheme.primary,
+        ),
       ),
     );
   }

@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'config/themes/app_themes.dart';
 import 'config/l10n/l10n.dart';
 import 'config/routes/app_router.dart';
 import 'core/providers/theme_provider.dart';
 import 'core/providers/locale_provider.dart';
+import 'core/providers/app_theme_provider.dart';
 import 'core/widgets/error_boundary.dart';
 
 class CVApp extends StatelessWidget {
@@ -28,35 +28,36 @@ class CVApp extends StatelessWidget {
             systemNavigationBarColor: Colors.transparent,
             systemNavigationBarIconBrightness: Brightness.dark,
           ),
-          child: Consumer2<ThemeProvider, LocaleProvider>(
-            builder: (context, themeProvider, localeProvider, _) {
-              return MaterialApp(
-                title: 'Professional CV Builder',
-                debugShowCheckedModeBanner: false,
-                theme: AppThemes.lightTheme,
-                darkTheme: AppThemes.darkTheme,
-                themeMode: themeProvider.themeMode,
-                locale: localeProvider.locale,
-                supportedLocales: L10n.supportedLocales,
-                localizationsDelegates: L10n.localizationsDelegates,
-                onGenerateRoute: AppRouter.onGenerateRoute,
-                initialRoute: AppRouter.splash,
-                builder: (context, child) {
-                  return MediaQuery(
-                    data: MediaQuery.of(
-                      context,
-                    ).copyWith(textScaler: const TextScaler.linear(1.0)),
-                    child: ErrorBoundary(
-                      onError: (error, stackTrace) {
-                        debugPrint('App Error: $error');
-                        debugPrint('Stack Trace: $stackTrace');
-                      },
-                      child: child!,
-                    ),
+          child: Consumer3<ThemeProvider, LocaleProvider, AppThemeProvider>(
+            builder:
+                (context, themeProvider, localeProvider, appThemeProvider, _) {
+                  return MaterialApp(
+                    title: 'Professional CV Builder',
+                    debugShowCheckedModeBanner: false,
+                    theme: appThemeProvider.currentTheme.lightTheme,
+                    darkTheme: appThemeProvider.currentTheme.darkTheme,
+                    themeMode: themeProvider.themeMode,
+                    locale: localeProvider.locale,
+                    supportedLocales: L10n.supportedLocales,
+                    localizationsDelegates: L10n.localizationsDelegates,
+                    onGenerateRoute: AppRouter.onGenerateRoute,
+                    initialRoute: AppRouter.splash,
+                    builder: (context, child) {
+                      return MediaQuery(
+                        data: MediaQuery.of(
+                          context,
+                        ).copyWith(textScaler: const TextScaler.linear(1.0)),
+                        child: ErrorBoundary(
+                          onError: (error, stackTrace) {
+                            debugPrint('App Error: $error');
+                            debugPrint('Stack Trace: $stackTrace');
+                          },
+                          child: child!,
+                        ),
+                      );
+                    },
                   );
                 },
-              );
-            },
           ),
         );
       },

@@ -6,6 +6,7 @@ import 'app.dart';
 import 'core/providers/cv_provider.dart';
 import 'core/providers/theme_provider.dart';
 import 'core/providers/locale_provider.dart';
+import 'core/providers/app_theme_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,6 +18,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => CVProvider()),
         ChangeNotifierProvider(create: (_) => ThemeProvider(prefs)),
         ChangeNotifierProvider(create: (_) => LocaleProvider(prefs)),
+        ChangeNotifierProvider(create: (_) => AppThemeProvider()),
       ],
       child: const CVApp(),
     ),

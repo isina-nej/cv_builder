@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:provider/provider.dart';
 import '../../../config/themes/colors.dart';
 import '../../../core/providers/cv_provider.dart';
@@ -53,7 +53,7 @@ class LiveCVPreview extends StatelessWidget {
                               'Professional Summary',
                               Text(
                                 cvProvider.cv.personalInfo.summary,
-                                style: GoogleFonts.inter(
+                                style: TextStyle(fontFamily: 'System',
                                   fontSize: 12,
                                   color: Colors.grey[700],
                                   height: 1.5,
@@ -120,7 +120,7 @@ class LiveCVPreview extends StatelessWidget {
         children: [
           Text(
             personal.name.isEmpty ? 'Your Name' : personal.name,
-            style: GoogleFonts.inter(
+            style: TextStyle(fontFamily: 'System',
               fontSize: 24,
               fontWeight: FontWeight.bold,
               color: Colors.white,
@@ -129,7 +129,7 @@ class LiveCVPreview extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             'Professional',
-            style: GoogleFonts.inter(
+            style: TextStyle(fontFamily: 'System',
               fontSize: 14,
               color: Colors.white.withOpacity(0.9),
             ),
@@ -162,7 +162,7 @@ class LiveCVPreview extends StatelessWidget {
         const SizedBox(width: 4),
         Text(
           text,
-          style: GoogleFonts.inter(
+          style: TextStyle(fontFamily: 'System',
             fontSize: 11,
             color: Colors.white.withOpacity(0.9),
           ),
@@ -179,7 +179,7 @@ class LiveCVPreview extends StatelessWidget {
         children: [
           Text(
             title,
-            style: GoogleFonts.inter(
+            style: TextStyle(fontFamily: 'System',
               fontSize: 16,
               fontWeight: FontWeight.w600,
               color: AppColors.primary,
@@ -205,7 +205,7 @@ class LiveCVPreview extends StatelessWidget {
         children: [
           Text(
             exp.position ?? 'Position',
-            style: GoogleFonts.inter(
+            style: TextStyle(fontFamily: 'System',
               fontSize: 13,
               fontWeight: FontWeight.w600,
               color: Colors.black87,
@@ -213,7 +213,7 @@ class LiveCVPreview extends StatelessWidget {
           ),
           Text(
             exp.company ?? 'Company',
-            style: GoogleFonts.inter(
+            style: TextStyle(fontFamily: 'System',
               fontSize: 12,
               fontWeight: FontWeight.w500,
               color: AppColors.primary,
@@ -221,13 +221,13 @@ class LiveCVPreview extends StatelessWidget {
           ),
           Text(
             '${exp.startDate ?? 'Start'} - ${exp.endDate ?? 'Present'}',
-            style: GoogleFonts.inter(fontSize: 10, color: Colors.grey[600]),
+            style: TextStyle(fontFamily: 'System',fontSize: 10, color: Colors.grey[600]),
           ),
           if (exp.description?.isNotEmpty == true) ...[
             const SizedBox(height: 4),
             Text(
               exp.description!,
-              style: GoogleFonts.inter(
+              style: TextStyle(fontFamily: 'System',
                 fontSize: 11,
                 color: Colors.grey[700],
                 height: 1.4,
@@ -247,7 +247,7 @@ class LiveCVPreview extends StatelessWidget {
         children: [
           Text(
             edu.degree ?? 'Degree',
-            style: GoogleFonts.inter(
+            style: TextStyle(fontFamily: 'System',
               fontSize: 13,
               fontWeight: FontWeight.w600,
               color: Colors.black87,
@@ -255,7 +255,7 @@ class LiveCVPreview extends StatelessWidget {
           ),
           Text(
             edu.institution ?? 'Institution',
-            style: GoogleFonts.inter(
+            style: TextStyle(fontFamily: 'System',
               fontSize: 12,
               fontWeight: FontWeight.w500,
               color: AppColors.secondary,
@@ -263,7 +263,7 @@ class LiveCVPreview extends StatelessWidget {
           ),
           Text(
             '${edu.startDate ?? 'Start'} - ${edu.endDate ?? 'Present'}',
-            style: GoogleFonts.inter(fontSize: 10, color: Colors.grey[600]),
+            style: TextStyle(fontFamily: 'System',fontSize: 10, color: Colors.grey[600]),
           ),
         ],
       ),
@@ -290,7 +290,7 @@ class LiveCVPreview extends StatelessWidget {
             children: [
               Text(
                 _getCategoryName(entry.key),
-                style: GoogleFonts.inter(
+                style: TextStyle(fontFamily: 'System',
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
                   color: AppColors.primary,
@@ -318,7 +318,7 @@ class LiveCVPreview extends StatelessWidget {
                     ),
                     child: Text(
                       '${skill.name} (${skill.level}/5)',
-                      style: GoogleFonts.inter(
+                      style: TextStyle(fontFamily: 'System',
                         fontSize: 10,
                         fontWeight: FontWeight.w500,
                         color: _getCategoryColor(skill.category),

@@ -4,7 +4,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:glass_kit/glass_kit.dart';
 import 'package:provider/provider.dart';
 import '../../../config/themes/colors.dart';
@@ -49,29 +48,26 @@ class _TemplateSelectorState extends State<TemplateSelector>
               .toList()
         : CVTemplateData.getTemplatesByType(_selectedType);
 
-    return Container(
-      height: double.infinity,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Header Section
-          _buildHeader(),
-          Gap(24.h),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Header Section
+        _buildHeader(),
+        Gap(24.h),
 
-          // Filter Section
-          _buildFilters(),
-          Gap(24.h),
+        // Filter Section
+        _buildFilters(),
+        Gap(24.h),
 
-          // Templates Grid
-          Expanded(child: _buildTemplatesGrid(templates)),
+        // Templates Grid
+        Expanded(child: _buildTemplatesGrid(templates)),
 
-          // Selected Template Info
-          if (_selectedTemplate != null) ...[
-            Gap(16.h),
-            _buildSelectedTemplateInfo(),
-          ],
+        // Selected Template Info
+        if (_selectedTemplate != null) ...[
+          Gap(16.h),
+          _buildSelectedTemplateInfo(),
         ],
-      ),
+      ],
     );
   }
 
@@ -97,7 +93,8 @@ class _TemplateSelectorState extends State<TemplateSelector>
               children: [
                 Text(
                   'Choose Your Template',
-                  style: GoogleFonts.inter(
+                  style: TextStyle(
+                    fontFamily: 'System',
                     fontSize: 28.sp,
                     fontWeight: FontWeight.bold,
                     color: AppColors.textPrimary,
@@ -106,7 +103,8 @@ class _TemplateSelectorState extends State<TemplateSelector>
                 Gap(8.h),
                 Text(
                   'Select a professional design that matches your style',
-                  style: GoogleFonts.inter(
+                  style: TextStyle(
+                    fontFamily: 'System',
                     fontSize: 16.sp,
                     color: AppColors.textSecondary,
                   ),
@@ -155,18 +153,19 @@ class _TemplateSelectorState extends State<TemplateSelector>
                               : null,
                           color: isSelected
                               ? null
-                              : Colors.grey.withOpacity(0.1),
+                              : Colors.grey.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(25.r),
                           border: Border.all(
                             color: isSelected
                                 ? Colors.transparent
-                                : Colors.grey.withOpacity(0.3),
+                                : Colors.grey.withValues(alpha: 0.3),
                             width: 1,
                           ),
                         ),
                         child: Text(
                           _getTypeDisplayName(type),
-                          style: GoogleFonts.inter(
+                          style: TextStyle(
+                            fontFamily: 'System',
                             fontSize: 14.sp,
                             fontWeight: isSelected
                                 ? FontWeight.w600
@@ -209,12 +208,14 @@ class _TemplateSelectorState extends State<TemplateSelector>
                           colors: [Colors.amber, Colors.orange],
                         )
                       : null,
-                  color: _showPremiumOnly ? null : Colors.grey.withOpacity(0.1),
+                  color: _showPremiumOnly
+                      ? null
+                      : Colors.grey.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(20.r),
                   border: Border.all(
                     color: _showPremiumOnly
                         ? Colors.transparent
-                        : Colors.grey.withOpacity(0.3),
+                        : Colors.grey.withValues(alpha: 0.3),
                   ),
                 ),
                 child: Row(
@@ -228,7 +229,8 @@ class _TemplateSelectorState extends State<TemplateSelector>
                     Gap(6.w),
                     Text(
                       'Premium Only',
-                      style: GoogleFonts.inter(
+                      style: TextStyle(
+                        fontFamily: 'System',
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w500,
                         color: _showPremiumOnly
@@ -255,12 +257,13 @@ class _TemplateSelectorState extends State<TemplateSelector>
             Icon(
               Icons.search_off,
               size: 64.sp,
-              color: Colors.grey.withOpacity(0.5),
+              color: Colors.grey.withValues(alpha: 0.5),
             ),
             Gap(16.h),
             Text(
               'No templates found',
-              style: GoogleFonts.inter(
+              style: TextStyle(
+                fontFamily: 'System',
                 fontSize: 18.sp,
                 fontWeight: FontWeight.w500,
                 color: AppColors.textSecondary,
@@ -317,14 +320,14 @@ class _TemplateSelectorState extends State<TemplateSelector>
           border: Border.all(
             color: isSelected
                 ? AppColors.primary
-                : Colors.grey.withOpacity(0.2),
+                : Colors.grey.withValues(alpha: 0.2),
             width: isSelected ? 3 : 1,
           ),
           boxShadow: [
             BoxShadow(
               color: isSelected
-                  ? AppColors.primary.withOpacity(0.3)
-                  : Colors.black.withOpacity(0.05),
+                  ? AppColors.primary.withValues(alpha: 0.3)
+                  : Colors.black.withValues(alpha: 0.05),
               blurRadius: isSelected ? 20 : 10,
               offset: const Offset(0, 5),
             ),
@@ -343,8 +346,8 @@ class _TemplateSelectorState extends State<TemplateSelector>
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
-                      template.primaryColor.withOpacity(0.1),
-                      template.secondaryColor.withOpacity(0.1),
+                      template.primaryColor.withValues(alpha: 0.1),
+                      template.secondaryColor.withValues(alpha: 0.1),
                     ],
                   ),
                 ),
@@ -383,7 +386,7 @@ class _TemplateSelectorState extends State<TemplateSelector>
                           color: Colors.white,
                           border: Border(
                             top: BorderSide(
-                              color: Colors.grey.withOpacity(0.1),
+                              color: Colors.grey.withValues(alpha: 0.1),
                             ),
                           ),
                         ),
@@ -396,7 +399,8 @@ class _TemplateSelectorState extends State<TemplateSelector>
                                 Expanded(
                                   child: Text(
                                     template.name,
-                                    style: GoogleFonts.inter(
+                                    style: TextStyle(
+                                      fontFamily: 'System',
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.w600,
                                       color: AppColors.textPrimary,
@@ -419,7 +423,8 @@ class _TemplateSelectorState extends State<TemplateSelector>
                                     ),
                                     child: Text(
                                       'PRO',
-                                      style: GoogleFonts.inter(
+                                      style: TextStyle(
+                                        fontFamily: 'System',
                                         fontSize: 10.sp,
                                         fontWeight: FontWeight.w600,
                                         color: Colors.white,
@@ -431,7 +436,8 @@ class _TemplateSelectorState extends State<TemplateSelector>
                             Gap(4.h),
                             Text(
                               template.description,
-                              style: GoogleFonts.inter(
+                              style: TextStyle(
+                                fontFamily: 'System',
                                 fontSize: 11.sp,
                                 color: AppColors.textSecondary,
                               ),
@@ -497,7 +503,8 @@ class _TemplateSelectorState extends State<TemplateSelector>
                 Expanded(
                   child: Text(
                     'Selected: ${_selectedTemplate!.name}',
-                    style: GoogleFonts.inter(
+                    style: TextStyle(
+                      fontFamily: 'System',
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w600,
                       color: AppColors.textPrimary,
@@ -518,7 +525,8 @@ class _TemplateSelectorState extends State<TemplateSelector>
                     ),
                     child: Text(
                       'PREMIUM',
-                      style: GoogleFonts.inter(
+                      style: TextStyle(
+                        fontFamily: 'System',
                         fontSize: 10.sp,
                         fontWeight: FontWeight.w600,
                         color: Colors.white,
@@ -530,7 +538,8 @@ class _TemplateSelectorState extends State<TemplateSelector>
             Gap(8.h),
             Text(
               _selectedTemplate!.description,
-              style: GoogleFonts.inter(
+              style: TextStyle(
+                fontFamily: 'System',
                 fontSize: 14.sp,
                 color: AppColors.textSecondary,
               ),
@@ -542,12 +551,15 @@ class _TemplateSelectorState extends State<TemplateSelector>
                 return Container(
                   padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                   decoration: BoxDecoration(
-                    color: _selectedTemplate!.primaryColor.withOpacity(0.1),
+                    color: _selectedTemplate!.primaryColor.withValues(
+                      alpha: 0.1,
+                    ),
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   child: Text(
                     _getFeatureDisplayName(feature),
-                    style: GoogleFonts.inter(
+                    style: TextStyle(
+                      fontFamily: 'System',
                       fontSize: 10.sp,
                       fontWeight: FontWeight.w500,
                       color: _selectedTemplate!.primaryColor,

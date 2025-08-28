@@ -1,9 +1,9 @@
 // lib/features/cv_builder/widgets/personal_form.dart
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/providers/cv_provider.dart';
 import '../../../core/utils/validators.dart';
+import '../../../core/widgets/cross_platform_image.dart';
 import '../models/personal_info.dart';
 import 'package:file_picker/file_picker.dart'; // Assume added dependency
 
@@ -102,7 +102,7 @@ class _PersonalFormState extends State<PersonalForm> {
             onPressed: _pickPhoto,
             child: const Text('Upload Photo'),
           ),
-          if (photoPath != null) Image.file(File(photoPath!), height: 100),
+          CrossPlatformImage(imagePath: photoPath, height: 100),
           ElevatedButton(
             onPressed: _save,
             child: const Text('Save Personal Info'),

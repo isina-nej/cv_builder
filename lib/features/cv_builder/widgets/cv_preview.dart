@@ -1,8 +1,8 @@
 // lib/features/cv_builder/widgets/cv_preview.dart
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/providers/cv_provider.dart';
+import '../../../core/widgets/cross_platform_image.dart';
 
 class CVPreview extends StatelessWidget {
   const CVPreview({super.key});
@@ -27,8 +27,7 @@ class CVPreview extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (cv.personalInfo.photoPath != null)
-            Image.file(File(cv.personalInfo.photoPath!), height: 150),
+          CrossPlatformImage(imagePath: cv.personalInfo.photoPath, height: 150),
           Text(
             cv.personalInfo.name,
             style: Theme.of(context).textTheme.displayLarge,

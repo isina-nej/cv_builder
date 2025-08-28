@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import '../../../config/themes/colors.dart';
 
 class SkillLevelSelector extends StatelessWidget {
@@ -23,7 +23,7 @@ class SkillLevelSelector extends StatelessWidget {
       children: [
         Text(
           'Skill Level',
-          style: GoogleFonts.inter(
+          style: TextStyle(fontFamily: 'System',
             fontSize: 16.sp,
             fontWeight: FontWeight.w600,
             color: AppColors.textPrimary,
@@ -37,7 +37,7 @@ class SkillLevelSelector extends StatelessWidget {
             Expanded(
               child: Text(
                 _getLevelText(selectedLevel),
-                style: GoogleFonts.inter(
+                style: TextStyle(fontFamily: 'System',
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w500,
                   color: AppColors.textSecondary,
@@ -46,7 +46,7 @@ class SkillLevelSelector extends StatelessWidget {
             ),
             Text(
               '$selectedLevel/5',
-              style: GoogleFonts.inter(
+              style: TextStyle(fontFamily: 'System',
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w600,
                 color: AppColors.primary,
@@ -125,7 +125,7 @@ class SkillLevelSelector extends StatelessWidget {
                 ),
                 child: Text(
                   level.toString(),
-                  style: GoogleFonts.inter(
+                  style: TextStyle(fontFamily: 'System',
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
                     color: isSelected ? Colors.white : AppColors.textSecondary,
