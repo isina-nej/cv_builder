@@ -8,7 +8,8 @@ import '../features/cv_builder/models/skill.dart';
 class DocxExporter {
   static Future<List<int>> generateDocx(CVModel cv) async {
     // Create a basic DOCX-compatible XML content
-    final content = '''
+    final content =
+        '''
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
   <w:body>
@@ -67,7 +68,10 @@ class DocxExporter {
   }
 
   static String _generateExperienceXml(List<Experience> experiences) {
-    return experiences.map((exp) => '''
+    return experiences
+        .map(
+          (exp) =>
+              '''
     <w:p>
       <w:r>
         <w:t>${exp.title} at ${exp.company}</w:t>
@@ -84,11 +88,16 @@ class DocxExporter {
       </w:r>
     </w:p>
     <w:p/>
-''').join();
+''',
+        )
+        .join();
   }
 
   static String _generateEducationXml(List<Education> educations) {
-    return educations.map((edu) => '''
+    return educations
+        .map(
+          (edu) =>
+              '''
     <w:p>
       <w:r>
         <w:t>${edu.degree} in ${edu.fieldOfStudy ?? 'General Studies'}</w:t>
@@ -100,16 +109,23 @@ class DocxExporter {
       </w:r>
     </w:p>
     <w:p/>
-''').join();
+''',
+        )
+        .join();
   }
 
   static String _generateSkillsXml(List<Skill> skills) {
-    return skills.map((skill) => '''
+    return skills
+        .map(
+          (skill) =>
+              '''
     <w:p>
       <w:r>
         <w:t>${skill.name}: ${skill.level}/5</w:t>
       </w:r>
     </w:p>
-''').join();
+''',
+        )
+        .join();
   }
 }

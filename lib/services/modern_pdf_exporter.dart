@@ -4,7 +4,64 @@ import 'package:pdf/widgets.dart' as pw;
 import '../features/cv_builder/models/cv_model.dart';
 
 class ModernPDFExporter {
+  static pw.Font? _persianFont;
+  static pw.Font? _persianFontBold;
+
+  // Persian text detection
+  static bool _containsPersian(String text) {
+    return RegExp(
+      r'[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]',
+    ).hasMatch(text);
+  }
+
+  // Initialize Persian fonts
+  static Future<void> _initializePersianFonts() async {
+    if (_persianFont == null || _persianFontBold == null) {
+      try {
+        _persianFont = pw.Font.courier();
+        _persianFontBold = pw.Font.courierBold();
+      } catch (e) {
+        _persianFont = pw.Font.courier();
+        _persianFontBold = pw.Font.courierBold();
+      }
+    }
+  }
+
+  // Get appropriate font
+  static pw.Font _getFont({required String text, bool bold = false}) {
+    if (_containsPersian(text)) {
+      return bold
+          ? (_persianFontBold ?? pw.Font.courierBold())
+          : (_persianFont ?? pw.Font.courier());
+    }
+    return bold ? pw.Font.helveticaBold() : pw.Font.helvetica();
+  }
+
+  // Create text style with Persian support
+  static pw.TextStyle _createTextStyle({
+    required String text,
+    required PdfColor color,
+    required double fontSize,
+    bool bold = false,
+    pw.FontStyle? fontStyle,
+    double? letterSpacing,
+    double? lineSpacing,
+  }) {
+    return pw.TextStyle(
+      font: _getFont(text: text, bold: bold),
+      color: color,
+      fontSize: fontSize,
+      fontWeight: bold ? pw.FontWeight.bold : pw.FontWeight.normal,
+      fontStyle: fontStyle,
+      letterSpacing: letterSpacing,
+      lineSpacing: lineSpacing,
+    );
+  }
+
   static Future<Uint8List> generateModernPDF(CVModel cv) async {
+    // Initialize Persian fonts first
+    await _initializePersianFonts();
+
     final pdf = pw.Document();
 
     // Modern color palette with solid colors (no withOpacity)
@@ -30,7 +87,13 @@ class ModernPDFExporter {
             // Right content - 65% width
             pw.Expanded(
               flex: 65,
-              child: _buildMainContent(cv, primaryColor, accentColor, textColor, lightGray),
+              child: _buildMainContent(
+                cv,
+                primaryColor,
+                accentColor,
+                textColor,
+                lightGray,
+              ),
             ),
           ],
         ),
@@ -40,7 +103,12 @@ class ModernPDFExporter {
     return pdf.save();
   }
 
-  static pw.Widget _buildSidebar(CVModel cv, PdfColor primaryColor, PdfColor lightBlue, PdfColor veryLightBlue) {
+  static pw.Widget _buildSidebar(
+    CVModel cv,
+    PdfColor primaryColor,
+    PdfColor lightBlue,
+    PdfColor veryLightBlue,
+  ) {
     return pw.Container(
       color: primaryColor,
       height: double.infinity,
@@ -60,13 +128,16 @@ class ModernPDFExporter {
               ),
               child: pw.Center(
                 child: pw.Text(
-                  cv.personalInfo.name.isNotEmpty 
-                    ? cv.personalInfo.name.substring(0, 1).toUpperCase()
-                    : 'P',
-                  style: pw.TextStyle(
-                    fontSize: 48,
-                    fontWeight: pw.FontWeight.bold,
+                  cv.personalInfo.name.isNotEmpty
+                      ? cv.personalInfo.name.substring(0, 1).toUpperCase()
+                      : 'P',
+                  style: _createTextStyle(
+                    text: cv.personalInfo.name.isNotEmpty
+                        ? cv.personalInfo.name.substring(0, 1).toUpperCase()
+                        : 'P',
                     color: primaryColor,
+                    fontSize: 48,
+                    bold: true,
                   ),
                 ),
               ),
@@ -76,12 +147,16 @@ class ModernPDFExporter {
             // Name
             pw.Text(
               cv.personalInfo.name.toUpperCase(),
-              style: pw.TextStyle(
-                fontSize: 18,
-                fontWeight: pw.FontWeight.bold,
+              style: _createTextStyle(
+                text: cv.personalInfo.name,
                 color: PdfColors.white,
+                fontSize: 18,
+                bold: true,
                 letterSpacing: 1.2,
               ),
+              textDirection: _containsPersian(cv.personalInfo.name)
+                  ? pw.TextDirection.rtl
+                  : pw.TextDirection.ltr,
             ),
             pw.SizedBox(height: 8),
 
@@ -89,33 +164,41 @@ class ModernPDFExporter {
             if (cv.personalInfo.jobTitle?.isNotEmpty == true) ...[
               pw.Text(
                 cv.personalInfo.jobTitle!,
-                style: pw.TextStyle(
-                  fontSize: 12,
+                style: _createTextStyle(
+                  text: cv.personalInfo.jobTitle!,
                   color: lightBlue,
+                  fontSize: 12,
                   fontStyle: pw.FontStyle.italic,
                 ),
+                textDirection: _containsPersian(cv.personalInfo.jobTitle!)
+                    ? pw.TextDirection.rtl
+                    : pw.TextDirection.ltr,
               ),
             ],
-            
+
             pw.SizedBox(height: 25),
 
             // Contact Information
-            _buildSidebarSection(
-              'CONTACT',
-              lightBlue,
-              [
-                if (cv.personalInfo.email.isNotEmpty)
-                  _buildContactItem('📧', cv.personalInfo.email, veryLightBlue),
-                if (cv.personalInfo.phone.isNotEmpty)
-                  _buildContactItem('📱', cv.personalInfo.phone, veryLightBlue),
-                if (cv.personalInfo.address.isNotEmpty)
-                  _buildContactItem('📍', cv.personalInfo.address, veryLightBlue),
-                if (cv.personalInfo.website?.isNotEmpty == true)
-                  _buildContactItem('🌐', cv.personalInfo.website!, veryLightBlue),
-                if (cv.personalInfo.linkedIn?.isNotEmpty == true)
-                  _buildContactItem('💼', cv.personalInfo.linkedIn!, veryLightBlue),
-              ],
-            ),
+            _buildSidebarSection('CONTACT', lightBlue, [
+              if (cv.personalInfo.email.isNotEmpty)
+                _buildContactItem('📧', cv.personalInfo.email, veryLightBlue),
+              if (cv.personalInfo.phone.isNotEmpty)
+                _buildContactItem('📱', cv.personalInfo.phone, veryLightBlue),
+              if (cv.personalInfo.address.isNotEmpty)
+                _buildContactItem('📍', cv.personalInfo.address, veryLightBlue),
+              if (cv.personalInfo.website?.isNotEmpty == true)
+                _buildContactItem(
+                  '🌐',
+                  cv.personalInfo.website!,
+                  veryLightBlue,
+                ),
+              if (cv.personalInfo.linkedIn?.isNotEmpty == true)
+                _buildContactItem(
+                  '💼',
+                  cv.personalInfo.linkedIn!,
+                  veryLightBlue,
+                ),
+            ]),
 
             pw.SizedBox(height: 25),
 
@@ -124,9 +207,16 @@ class ModernPDFExporter {
               _buildSidebarSection(
                 'SKILLS',
                 lightBlue,
-                cv.skills.take(8).map((skill) => 
-                  _buildSkillItem(skill.name, skill.level / 5.0, veryLightBlue)
-                ).toList(),
+                cv.skills
+                    .take(8)
+                    .map(
+                      (skill) => _buildSkillItem(
+                        skill.name,
+                        skill.level / 5.0,
+                        veryLightBlue,
+                      ),
+                    )
+                    .toList(),
               ),
             ],
           ],
@@ -135,7 +225,13 @@ class ModernPDFExporter {
     );
   }
 
-  static pw.Widget _buildMainContent(CVModel cv, PdfColor primaryColor, PdfColor accentColor, PdfColor textColor, PdfColor lightGray) {
+  static pw.Widget _buildMainContent(
+    CVModel cv,
+    PdfColor primaryColor,
+    PdfColor accentColor,
+    PdfColor textColor,
+    PdfColor lightGray,
+  ) {
     return pw.Container(
       color: PdfColors.white,
       height: double.infinity,
@@ -153,7 +249,9 @@ class ModernPDFExporter {
                 padding: const pw.EdgeInsets.all(20),
                 decoration: pw.BoxDecoration(
                   color: lightGray,
-                  borderRadius: const pw.BorderRadius.all(pw.Radius.circular(12)),
+                  borderRadius: const pw.BorderRadius.all(
+                    pw.Radius.circular(12),
+                  ),
                   border: pw.Border(
                     left: pw.BorderSide(color: accentColor, width: 4),
                   ),
@@ -175,7 +273,14 @@ class ModernPDFExporter {
             if (cv.experiences.isNotEmpty) ...[
               _buildMainSection('WORK EXPERIENCE', primaryColor),
               pw.SizedBox(height: 20),
-              ...cv.experiences.map((exp) => _buildExperienceCard(exp, accentColor, textColor, lightGray)),
+              ...cv.experiences.map(
+                (exp) => _buildExperienceCard(
+                  exp,
+                  accentColor,
+                  textColor,
+                  lightGray,
+                ),
+              ),
             ],
 
             // Education
@@ -183,7 +288,9 @@ class ModernPDFExporter {
               pw.SizedBox(height: 30),
               _buildMainSection('EDUCATION', primaryColor),
               pw.SizedBox(height: 20),
-              ...cv.educations.map((edu) => _buildEducationCard(edu, accentColor, textColor)),
+              ...cv.educations.map(
+                (edu) => _buildEducationCard(edu, accentColor, textColor),
+              ),
             ],
           ],
         ),
@@ -191,18 +298,28 @@ class ModernPDFExporter {
     );
   }
 
-  static pw.Widget _buildSidebarSection(String title, PdfColor sectionColor, List<pw.Widget> children) {
+  static pw.Widget _buildSidebarSection(
+    String title,
+    PdfColor sectionColor,
+    List<pw.Widget> children,
+  ) {
     return pw.Column(
-      crossAxisAlignment: pw.CrossAxisAlignment.start,
+      crossAxisAlignment: _containsPersian(title)
+          ? pw.CrossAxisAlignment.end
+          : pw.CrossAxisAlignment.start,
       children: [
         pw.Text(
           title,
-          style: pw.TextStyle(
-            fontSize: 12,
-            fontWeight: pw.FontWeight.bold,
+          style: _createTextStyle(
+            text: title,
             color: PdfColors.white,
+            fontSize: 12,
+            bold: true,
             letterSpacing: 1.5,
           ),
+          textDirection: _containsPersian(title)
+              ? pw.TextDirection.rtl
+              : pw.TextDirection.ltr,
         ),
         pw.Container(
           margin: const pw.EdgeInsets.only(top: 8, bottom: 15),
@@ -215,16 +332,17 @@ class ModernPDFExporter {
     );
   }
 
-  static pw.Widget _buildContactItem(String emoji, String text, PdfColor textColor) {
+  static pw.Widget _buildContactItem(
+    String emoji,
+    String text,
+    PdfColor textColor,
+  ) {
     return pw.Padding(
       padding: const pw.EdgeInsets.only(bottom: 12),
       child: pw.Row(
         crossAxisAlignment: pw.CrossAxisAlignment.start,
         children: [
-          pw.Text(
-            emoji,
-            style: const pw.TextStyle(fontSize: 12),
-          ),
+          pw.Text(emoji, style: const pw.TextStyle(fontSize: 12)),
           pw.SizedBox(width: 10),
           pw.Expanded(
             child: pw.Text(
@@ -241,7 +359,11 @@ class ModernPDFExporter {
     );
   }
 
-  static pw.Widget _buildSkillItem(String skillName, double level, PdfColor textColor) {
+  static pw.Widget _buildSkillItem(
+    String skillName,
+    double level,
+    PdfColor textColor,
+  ) {
     return pw.Padding(
       padding: const pw.EdgeInsets.only(bottom: 15),
       child: pw.Column(
@@ -249,11 +371,15 @@ class ModernPDFExporter {
         children: [
           pw.Text(
             skillName,
-            style: pw.TextStyle(
-              fontSize: 10,
+            style: _createTextStyle(
+              text: skillName,
               color: textColor,
-              fontWeight: pw.FontWeight.bold,
+              fontSize: 10,
+              bold: true,
             ),
+            textDirection: _containsPersian(skillName)
+                ? pw.TextDirection.rtl
+                : pw.TextDirection.ltr,
           ),
           pw.SizedBox(height: 6),
           pw.Container(
@@ -270,7 +396,9 @@ class ModernPDFExporter {
                 width: (level * 140).clamp(0, 140), // Fixed width for sidebar
                 decoration: pw.BoxDecoration(
                   color: PdfColors.white,
-                  borderRadius: const pw.BorderRadius.all(pw.Radius.circular(4)),
+                  borderRadius: const pw.BorderRadius.all(
+                    pw.Radius.circular(4),
+                  ),
                 ),
               ),
             ),
@@ -306,12 +434,20 @@ class ModernPDFExporter {
     );
   }
 
-  static pw.Widget _buildExperienceCard(experience, PdfColor accentColor, PdfColor textColor, PdfColor lightGray) {
+  static pw.Widget _buildExperienceCard(
+    experience,
+    PdfColor accentColor,
+    PdfColor textColor,
+    PdfColor lightGray,
+  ) {
     return pw.Container(
       margin: const pw.EdgeInsets.only(bottom: 25),
       padding: const pw.EdgeInsets.all(20),
       decoration: pw.BoxDecoration(
-        border: pw.Border.all(color: const PdfColor.fromInt(0xFFe5e7eb), width: 1),
+        border: pw.Border.all(
+          color: const PdfColor.fromInt(0xFFe5e7eb),
+          width: 1,
+        ),
         borderRadius: const pw.BorderRadius.all(pw.Radius.circular(12)),
       ),
       child: pw.Column(
@@ -347,10 +483,15 @@ class ModernPDFExporter {
                 ),
               ),
               pw.Container(
-                padding: const pw.EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: const pw.EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
                 decoration: pw.BoxDecoration(
                   color: const PdfColor.fromInt(0xFFe0f2fe),
-                  borderRadius: const pw.BorderRadius.all(pw.Radius.circular(16)),
+                  borderRadius: const pw.BorderRadius.all(
+                    pw.Radius.circular(16),
+                  ),
                 ),
                 child: pw.Text(
                   '${experience.startDate} - ${experience.endDate}',
@@ -363,9 +504,9 @@ class ModernPDFExporter {
               ),
             ],
           ),
-          
+
           pw.SizedBox(height: 12),
-          
+
           // Description
           if (experience.description.isNotEmpty) ...[
             pw.Text(
@@ -378,7 +519,7 @@ class ModernPDFExporter {
               textAlign: pw.TextAlign.justify,
             ),
           ],
-          
+
           // Achievements
           if (experience.achievements.isNotEmpty) ...[
             pw.SizedBox(height: 12),
@@ -391,42 +532,50 @@ class ModernPDFExporter {
               ),
             ),
             pw.SizedBox(height: 6),
-            ...experience.achievements.take(4).map((achievement) =>
-              pw.Padding(
-                padding: const pw.EdgeInsets.only(bottom: 6),
-                child: pw.Row(
-                  crossAxisAlignment: pw.CrossAxisAlignment.start,
-                  children: [
-                    pw.Container(
-                      margin: const pw.EdgeInsets.only(top: 6, right: 10),
-                      width: 4,
-                      height: 4,
-                      decoration: pw.BoxDecoration(
-                        color: accentColor,
-                        borderRadius: const pw.BorderRadius.all(pw.Radius.circular(2)),
-                      ),
-                    ),
-                    pw.Expanded(
-                      child: pw.Text(
-                        achievement,
-                        style: pw.TextStyle(
-                          fontSize: 9,
-                          color: textColor,
-                          lineSpacing: 1.3,
+            ...experience.achievements
+                .take(4)
+                .map(
+                  (achievement) => pw.Padding(
+                    padding: const pw.EdgeInsets.only(bottom: 6),
+                    child: pw.Row(
+                      crossAxisAlignment: pw.CrossAxisAlignment.start,
+                      children: [
+                        pw.Container(
+                          margin: const pw.EdgeInsets.only(top: 6, right: 10),
+                          width: 4,
+                          height: 4,
+                          decoration: pw.BoxDecoration(
+                            color: accentColor,
+                            borderRadius: const pw.BorderRadius.all(
+                              pw.Radius.circular(2),
+                            ),
+                          ),
                         ),
-                      ),
+                        pw.Expanded(
+                          child: pw.Text(
+                            achievement,
+                            style: pw.TextStyle(
+                              fontSize: 9,
+                              color: textColor,
+                              lineSpacing: 1.3,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
           ],
         ],
       ),
     );
   }
 
-  static pw.Widget _buildEducationCard(education, PdfColor accentColor, PdfColor textColor) {
+  static pw.Widget _buildEducationCard(
+    education,
+    PdfColor accentColor,
+    PdfColor textColor,
+  ) {
     return pw.Container(
       margin: const pw.EdgeInsets.only(bottom: 18),
       child: pw.Row(
@@ -485,10 +634,15 @@ class ModernPDFExporter {
                     if (education.grade?.isNotEmpty == true) ...[
                       pw.SizedBox(width: 15),
                       pw.Container(
-                        padding: const pw.EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                        padding: const pw.EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 2,
+                        ),
                         decoration: pw.BoxDecoration(
                           color: const PdfColor.fromInt(0xFFf3f4f6),
-                          borderRadius: const pw.BorderRadius.all(pw.Radius.circular(8)),
+                          borderRadius: const pw.BorderRadius.all(
+                            pw.Radius.circular(8),
+                          ),
                         ),
                         child: pw.Text(
                           'Grade: ${education.grade}',
