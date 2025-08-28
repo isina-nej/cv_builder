@@ -8,6 +8,7 @@ import 'config/l10n/l10n.dart';
 import 'config/routes/app_router.dart';
 import 'core/providers/theme_provider.dart';
 import 'core/providers/locale_provider.dart';
+import 'core/widgets/error_boundary.dart';
 
 class CVApp extends StatelessWidget {
   const CVApp({super.key});
@@ -39,13 +40,19 @@ class CVApp extends StatelessWidget {
                 supportedLocales: L10n.supportedLocales,
                 localizationsDelegates: L10n.localizationsDelegates,
                 onGenerateRoute: AppRouter.onGenerateRoute,
-                initialRoute: AppRouter.welcome,
+                initialRoute: AppRouter.splash,
                 builder: (context, child) {
                   return MediaQuery(
                     data: MediaQuery.of(
                       context,
                     ).copyWith(textScaler: const TextScaler.linear(1.0)),
-                    child: child!,
+                    child: ErrorBoundary(
+                      onError: (error, stackTrace) {
+                        debugPrint('App Error: $error');
+                        debugPrint('Stack Trace: $stackTrace');
+                      },
+                      child: child!,
+                    ),
                   );
                 },
               );

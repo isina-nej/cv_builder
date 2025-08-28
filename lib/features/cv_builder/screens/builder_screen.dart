@@ -1,13 +1,10 @@
 // lib/features/cv_builder/screens/builder_screen.dart
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import '../../../config/themes/colors.dart';
-import '../../../core/providers/cv_provider.dart';
 import '../../../core/providers/theme_provider.dart';
 import '../widgets/animated_card.dart';
 import '../widgets/step_indicator.dart';
@@ -64,7 +61,7 @@ class _BuilderScreenState extends State<BuilderScreen>
     super.initState();
     _pageController = PageController();
     _animationController = AnimationController(
-      duration: const Duration(milliseconds: 800),
+      duration: const Duration(milliseconds: 500), // سریع‌تر
       vsync: this,
     );
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
@@ -156,7 +153,7 @@ class _BuilderScreenState extends State<BuilderScreen>
                 color: theme.colorScheme.surface,
                 boxShadow: [
                   BoxShadow(
-                    color: theme.shadowColor.withOpacity(0.1),
+                    color: theme.shadowColor.withValues(alpha: 0.1),
                     blurRadius: 10,
                     offset: const Offset(0, 2),
                   ),
@@ -198,7 +195,7 @@ class _BuilderScreenState extends State<BuilderScreen>
                 color: theme.colorScheme.surface,
                 boxShadow: [
                   BoxShadow(
-                    color: theme.shadowColor.withOpacity(0.1),
+                    color: theme.shadowColor.withValues(alpha: 0.1),
                     blurRadius: 10,
                     offset: const Offset(0, -2),
                   ),

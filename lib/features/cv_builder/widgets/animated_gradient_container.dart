@@ -12,7 +12,7 @@ class AnimatedGradientContainer extends StatefulWidget {
     super.key,
     required this.child,
     required this.gradientColors,
-    this.duration = const Duration(seconds: 3),
+    this.duration = const Duration(seconds: 4), // کندتر برای صرفه‌جویی در منابع
     this.begin = Alignment.topLeft,
     this.end = Alignment.bottomRight,
   });
@@ -37,26 +37,23 @@ class _AnimatedGradientContainerState extends State<AnimatedGradientContainer>
     _animation = Tween<double>(
       begin: 0.0,
       end: 1.0,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.linear));
 
     _currentColors = List.from(widget.gradientColors);
     _targetColors = List.from(widget.gradientColors);
 
+    // فقط یک بار اجرا شود نه تکرار
     _startAnimation();
   }
 
   void _startAnimation() {
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        // Shuffle colors for next animation
-        _targetColors = List.from(widget.gradientColors)..shuffle();
-        _controller.reverse();
-      } else if (status == AnimationStatus.dismissed) {
         setState(() {
           _currentColors = List.from(_targetColors);
         });
-        _targetColors = List.from(widget.gradientColors)..shuffle();
-        _controller.forward();
+        // متوقف کردن انیمیشن بعد از یک چرخه
+        _controller.stop();
       }
     });
 

@@ -5,10 +5,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
 import '../../../config/themes/colors.dart';
 import '../../../config/routes/app_router.dart';
-import '../widgets/animated_gradient_container.dart';
+import '../../../core/utils/performance_monitor.dart';
 import '../widgets/floating_action_button_animated.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -23,12 +22,15 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   late AnimationController _controller;
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
+  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
+    PerformanceMonitor().startTimer('WelcomeScreen_Init');
+
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 2000),
+      duration: const Duration(milliseconds: 1500), // کاهش مدت زمان
       vsync: this,
     );
 
@@ -47,7 +49,14 @@ class _WelcomeScreenState extends State<WelcomeScreen>
           ),
         );
 
-    _controller.forward();
+    // اضافه کردن delay برای جلوگیری از گیر کردن
+    Future.delayed(const Duration(milliseconds: 300), () {
+      if (mounted) {
+        setState(() => _isLoading = false);
+        _controller.forward();
+        PerformanceMonitor().endTimer('WelcomeScreen_Init');
+      }
+    });
   }
 
   @override
@@ -58,28 +67,56 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return Scaffold(
+        body: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                AppColors.primary,
+                AppColors.secondary,
+                AppColors.accent,
+              ],
+            ),
+          ),
+          child: const Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
       body: Stack(
         children: [
-          // Animated Background
-          AnimatedGradientContainer(
-            gradientColors: const [
-              AppColors.primary,
-              AppColors.secondary,
-              AppColors.accent,
-            ],
-            child: Container(),
+          // Animated Background - ساده‌تر شده
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  AppColors.primary,
+                  AppColors.secondary,
+                  AppColors.accent,
+                ],
+              ),
+            ),
           ),
 
-          // Glass morphism overlay
+          // Glass morphism overlay - ساده‌تر شده
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  Colors.white.withOpacity(0.1),
-                  Colors.white.withOpacity(0.05),
+                  Colors.white.withValues(alpha: 0.1),
+                  Colors.white.withValues(alpha: 0.05),
                 ],
               ),
             ),
@@ -102,93 +139,69 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                           child: FadeInAnimation(child: widget),
                         ),
                         children: [
-                          // Logo with pulse animation
+                          // Logo - ساده‌تر شده
                           Container(
-                                width: 120.w,
-                                height: 120.w,
-                                decoration: BoxDecoration(
-                                  gradient: const LinearGradient(
-                                    colors: [Colors.white, Colors.white70],
-                                  ),
-                                  shape: BoxShape.circle,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.1),
-                                      blurRadius: 30,
-                                      offset: const Offset(0, 10),
-                                    ),
-                                  ],
-                                ),
-                                child: Icon(
-                                  Icons.description_outlined,
-                                  size: 60.sp,
-                                  color: AppColors.primary,
-                                ),
-                              )
-                              .animate(
-                                onPlay: (controller) => controller.repeat(),
-                              )
-                              .scale(
-                                begin: const Offset(1.0, 1.0),
-                                end: const Offset(1.1, 1.1),
-                                duration: 2000.ms,
-                                curve: Curves.easeInOut,
-                              )
-                              .then()
-                              .scale(
-                                begin: const Offset(1.1, 1.1),
-                                end: const Offset(1.0, 1.0),
-                                duration: 2000.ms,
-                                curve: Curves.easeInOut,
+                            width: 120.w,
+                            height: 120.w,
+                            decoration: BoxDecoration(
+                              gradient: const LinearGradient(
+                                colors: [Colors.white, Colors.white70],
                               ),
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.1),
+                                  blurRadius: 30,
+                                  offset: const Offset(0, 10),
+                                ),
+                              ],
+                            ),
+                            child: Icon(
+                              Icons.description_outlined,
+                              size: 60.sp,
+                              color: AppColors.primary,
+                            ),
+                          ).animate().scale(
+                            begin: const Offset(0.8, 0.8),
+                            end: const Offset(1.0, 1.0),
+                            duration: 800.ms,
+                            curve: Curves.elasticOut,
+                          ),
 
                           Gap(32.h),
 
-                          // Animated Title
-                          AnimatedBuilder(
-                            animation: _fadeAnimation,
-                            builder: (context, child) {
-                              return FadeTransition(
-                                opacity: _fadeAnimation,
-                                child: SlideTransition(
-                                  position: _slideAnimation,
-                                  child: Column(
-                                    children: [
-                                      DefaultTextStyle(
-                                        style: GoogleFonts.poppins(
-                                          fontSize: 32.sp,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                        ),
-                                        child: AnimatedTextKit(
-                                          animatedTexts: [
-                                            TyperAnimatedText(
-                                              'CV Builder Pro',
-                                              speed: const Duration(
-                                                milliseconds: 100,
-                                              ),
-                                            ),
-                                          ],
-                                          isRepeatingAnimation: false,
-                                        ),
-                                      ),
-
-                                      Gap(16.h),
-
-                                      Text(
-                                        'Create stunning professional CVs\\nwith modern templates and animations',
-                                        textAlign: TextAlign.center,
-                                        style: GoogleFonts.inter(
-                                          fontSize: 16.sp,
-                                          color: Colors.white.withOpacity(0.9),
-                                          height: 1.5,
-                                        ),
-                                      ),
-                                    ],
+                          // Title - ساده‌تر شده
+                          FadeTransition(
+                            opacity: _fadeAnimation,
+                            child: SlideTransition(
+                              position: _slideAnimation,
+                              child: Column(
+                                children: [
+                                  Text(
+                                    'CV Builder Pro',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 32.sp,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
                                   ),
-                                ),
-                              );
-                            },
+
+                                  Gap(16.h),
+
+                                  Text(
+                                    'Create stunning professional CVs\nwith modern templates and animations',
+                                    textAlign: TextAlign.center,
+                                    style: GoogleFonts.inter(
+                                      fontSize: 16.sp,
+                                      color: Colors.white.withValues(
+                                        alpha: 0.9,
+                                      ),
+                                      height: 1.5,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -197,14 +210,16 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
                   const Spacer(),
 
-                  // Feature highlights with staggered animations
+                  // Feature highlights - ساده‌تر شده
                   AnimationLimiter(
                     child: Column(
                       children: AnimationConfiguration.toStaggeredList(
-                        duration: const Duration(milliseconds: 600),
-                        delay: const Duration(milliseconds: 1000),
+                        duration: const Duration(milliseconds: 400), // سریع‌تر
+                        delay: const Duration(
+                          milliseconds: 600,
+                        ), // زودتر شروع شود
                         childAnimationBuilder: (widget) => SlideAnimation(
-                          verticalOffset: 50.h,
+                          verticalOffset: 30.h,
                           child: FadeInAnimation(child: widget),
                         ),
                         children: [
@@ -232,37 +247,31 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
                   Gap(40.h),
 
-                  // Action buttons with animated entrance
+                  // Action buttons - ساده‌تر شده
                   AnimationLimiter(
                     child: Column(
                       children: AnimationConfiguration.toStaggeredList(
-                        duration: const Duration(milliseconds: 600),
-                        delay: const Duration(milliseconds: 1500),
+                        duration: const Duration(milliseconds: 300), // سریع‌تر
+                        delay: const Duration(milliseconds: 800), // زودتر
                         childAnimationBuilder: (widget) => SlideAnimation(
-                          verticalOffset: 30.h,
+                          verticalOffset: 20.h,
                           child: FadeInAnimation(child: widget),
                         ),
                         children: [
                           FloatingActionButtonAnimated(
-                            onPressed: () => Navigator.pushNamedAndRemoveUntil(
-                              context,
-                              AppRouter.builder,
-                              (route) => false,
-                            ),
+                            onPressed: () =>
+                                Navigator.pushNamed(context, AppRouter.builder),
                             child: Container(
                               width: double.infinity,
                               height: 56.h,
                               decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    Colors.white,
-                                    Colors.white.withOpacity(0.9),
-                                  ],
+                                gradient: const LinearGradient(
+                                  colors: [Colors.white, Colors.white70],
                                 ),
                                 borderRadius: BorderRadius.circular(16.r),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
+                                    color: Colors.black.withValues(alpha: 0.1),
                                     blurRadius: 20,
                                     offset: const Offset(0, 8),
                                   ),
@@ -293,18 +302,17 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                           Gap(16.h),
 
                           TextButton(
-                            onPressed: () => Navigator.pushNamedAndRemoveUntil(
-                              context,
-                              AppRouter.builder,
-                              (route) => false,
-                            ),
+                            onPressed: () =>
+                                Navigator.pushNamed(context, AppRouter.builder),
                             child: Text(
                               'Skip Introduction',
                               style: GoogleFonts.inter(
                                 fontSize: 14.sp,
-                                color: Colors.white.withOpacity(0.8),
+                                color: Colors.white.withValues(alpha: 0.8),
                                 decoration: TextDecoration.underline,
-                                decorationColor: Colors.white.withOpacity(0.8),
+                                decorationColor: Colors.white.withValues(
+                                  alpha: 0.8,
+                                ),
                               ),
                             ),
                           ),
@@ -331,9 +339,12 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     return Container(
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.1),
+        color: Colors.white.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(color: Colors.white.withOpacity(0.2), width: 1),
+        border: Border.all(
+          color: Colors.white.withValues(alpha: 0.2),
+          width: 1,
+        ),
       ),
       child: Row(
         children: [
@@ -341,7 +352,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             width: 48.w,
             height: 48.w,
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
+              color: Colors.white.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(12.r),
             ),
             child: Icon(icon, size: 24.sp, color: Colors.white),
@@ -364,7 +375,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   description,
                   style: GoogleFonts.inter(
                     fontSize: 14.sp,
-                    color: Colors.white.withOpacity(0.8),
+                    color: Colors.white.withValues(alpha: 0.8),
                   ),
                 ),
               ],

@@ -31,7 +31,7 @@ class _FloatingActionButtonAnimatedState
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: 100), // سریع‌تر
       vsync: this,
     );
 
@@ -42,7 +42,7 @@ class _FloatingActionButtonAnimatedState
 
     _rotationAnimation = Tween<double>(
       begin: 0.0,
-      end: 0.02,
+      end: 0.01, // کمتر
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
