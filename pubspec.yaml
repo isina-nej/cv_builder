@@ -37,7 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   provider: ^6.1.5+1
   shared_preferences: ^2.5.3
-  file_picker: ^8.1.2
+  file_picker: ^10.3.2
   pdf: ^3.11.3
   path_provider: ^2.1.5
   intl: ^0.20.2
@@ -45,21 +45,21 @@ dependencies:
   # Professional UI & Animation packages
   flutter_staggered_animations: ^1.1.1
   flutter_animate: ^4.5.0
-  lottie: ^3.1.2
+  lottie: ^3.3.1
   rive: ^0.13.13
   shimmer: ^3.0.0
   flutter_staggered_grid_view: ^0.7.0
-  carousel_slider: ^4.2.1
+  carousel_slider: ^5.1.1
   smooth_page_indicator: ^1.1.0
   animated_text_kit: ^4.2.2
 
   # UI Enhancement packages
   flutter_screenutil: ^5.9.3
   gap: ^3.0.1
-  glass_kit: ^3.0.0
+  glass_kit: ^4.0.1
   flutter_svg: ^2.0.10+1
   cached_network_image: ^3.3.1
-  photo_view: ^0.14.0
+  photo_view: ^0.15.0
 
   # Form & Input packages
   form_builder_validators: ^11.0.0
@@ -68,13 +68,13 @@ dependencies:
   mask_text_input_formatter: ^2.9.0
 
   # State & Utils packages
-  get_it: ^7.7.0
+  get_it: ^8.2.0
   equatable: ^2.0.5
   freezed_annotation: ^2.4.4
   json_annotation: ^4.9.0
 
   # Advanced features
-  google_fonts: ^6.2.1
+  google_fonts: ^6.3.1
   flutter_colorpicker: ^1.1.0
   image_picker: ^1.1.2
   url_launcher: ^6.3.0
@@ -93,7 +93,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
